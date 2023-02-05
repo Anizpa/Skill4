@@ -2,13 +2,18 @@ package com.example.skill4;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     ToggleButton tg1;
     TextView etiEstado;
     Switch sw;
+
+    Spinner comboDias;
+
 
     private static final String TAG="Seguimiuento";
 
@@ -44,6 +52,21 @@ public class MainActivity extends AppCompatActivity {
         tg1 = (ToggleButton) findViewById(R.id.tgbtn);
         etiEstado= (TextView) findViewById(R.id.etiSel);
         sw = (Switch) findViewById(R.id.switch1);
+        comboDias = (Spinner) findViewById(R.id.spinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.combo_dias, android.R.layout.simple_spinner_item);
+        //Tambien se puede hacer creando un arraylist string desde el meain y cambiando esta linea por new ArrayAdapters y nombrando el arrayList al final
+        comboDias.setAdapter(adapter);
+
+        comboDias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(adapterView.getContext(), "Seleccionado: " +adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
 
         Log.i("info", "Valor informacion");
         Log.i( TAG, "Mensaje seguimiento 1");
@@ -88,6 +111,17 @@ public class MainActivity extends AppCompatActivity {
                 etiEstado.setText("Boton Off");
 
             }
+        }
+
+        if(view.getId() == R.id.btn2){
+            Intent miIntent = new Intent(MainActivity.this, MensajeActivity.class);
+
+            Bundle miBundle = new Bundle();
+            miBundle.putString("nombre", etiqueta.getText().toString());
+
+            miIntent.putExtras(miBundle);
+
+            startActivity(miIntent);
         }
 
 
